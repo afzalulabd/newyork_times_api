@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API_FRONTEND</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+<script>
+var main=document.createElement("DIV");
+main.setAttribute("class","container");
+main.setAttribute("id","all");
+document.body.append(main);
+var para=document.createElement("P");
+
+var buttontag=document.createElement("BUTTON");
+buttontag.textContent="ART";
+buttontag.setAttribute("class","btn btn-primary");
+buttontag.setAttribute("id","firstcollapse");
+buttontag.setAttribute("type","button");
+buttontag.setAttribute("data-toggle","collapse");
+buttontag.setAttribute("data-target","#arts");
+buttontag.setAttribute("aria-expanded","false");
+buttontag.setAttribute("aria-controls","arts");
+buttontag.setAttribute("onclick","getresults()");
+para.appendChild(buttontag)
+main.appendChild(para);
+
+
+var getresults= async ()=>{
+try{ var newsurl="https://api.nytimes.com/svc/topstories/v2/arts.json?api-key=CG8PsVvOCZfEn7i28xHELp7kpsZGhTHj";
+     var restcountryresponse=await fetch(newsurl);
+     var result=await restcountryresponse.json();
+     var all = document.getElementById('all');
+
+    if(!document.getElementById("arts")){
+        console.log("First");
+        let tags = '';
+              var row = document.createElement('div');
+              for (var i = 0; i < result.results.length; i++) {
+                  var imageurl=result.results[i].multimedia[4].url;
+                  row.setAttribute('class', 'row mt-2');
+                  var col = document.createElement('div');
+                  col.setAttribute('id', i);
+                  col.setAttribute('class','col col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-8');
+                  tags = `
+                    <div class="collapse.show" id="arts" style="height: 80%;">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                                    <span id="section" style="color:rgb(29, 169, 250);font-size: medium;">${result.results[i].section.toUpperCase()} &nbsp;&nbsp;</span> 
+                                    <span id="itemtype" style="color:rgb(132, 132, 133);font-size: medium;">&nbsp;&nbsp;${result.results[i].item_type.toUpperCase()}</span>
+                                    <br>
+                                    <span id="title" style="color:rgb(2, 8, 12);font-size:x-large;font-weight: bold;">${result.results[i].title} </span>
+                                    <br>
+                                    <span id="createddate" style="color:rgb(132, 132, 133);font-size:x-small;font-weight: bold;">${result.results[i].created_date} &nbsp;&nbsp;</span> 
+                                    <span id="byline" style="color:rgb(132, 132, 133);font-size:x-small;font-weight: bold;">&nbsp;&nbsp;${result.results[i].byline} </span> 
+                                    <br>
+                                    <br>
+                                    <span id="abstract" style="color:rgb(2, 8, 12));font-size:medium;">&nbsp;&nbsp;${result.results[i].abstract} </span>  <br>
+                                    <br>
+                                    <a href="${result.results[i].short_url}" style="color:rgb(29, 169, 250);font-size: medium;">Continue reading</a> 
+                                </div>
+                                <div class="col col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                    <img src="${imageurl}" alt="" style="border: 1px solid #ddd;border-radius: 4px;padding: 5px;width: 250px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      `;
+                      col.innerHTML = tags;
+                     
+                      row.appendChild(col);
+                      all.appendChild(row);
+                      console.log(document.getElementById("arts").className)
+                      document.getElementById("arts").className==="";
+                      document.getElementById("arts").className==="collapse.show";
+                      console.log(document.getElementById("arts").className)
+                  }
+     }else{
+         
+        document.getElementById("arts").className=="";
+         document.getElementById("arts").className=="collapse";
+     }
+    
+}catch(error){
+console.log("error");
+}
+}
+
+</script>
+
+</body>
+</html>
